@@ -1,7 +1,6 @@
 package com.exmp.simpletest
 
 import org.junit.Test
-import kotlin.math.pow
 
 class FoldingPaperTest {
     @Test
