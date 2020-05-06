@@ -12,7 +12,10 @@ class StackTest {
     fun stackMain() {
 //        println("stack1 = " + stack1(intArrayOf(6, 9, 5, 7, 4)).joinToString(" "))
 //        println("stack2 = " + stack2(2, 10, intArrayOf(7, 4, 5, 6)))
-        println("stack3 = " + stack3(intArrayOf(93, 30, 55), intArrayOf(1, 30, 5)).joinToString(" "))
+//        println("stack3 = " + stack3(intArrayOf(93, 30, 55), intArrayOf(1, 30, 5)).joinToString(" "))
+//        println("stack4 = " + stack4(intArrayOf(2, 1, 3, 2), 2))
+//        println("stack5 = " + stack5("()(((()())(())()))(())"))
+        println("stack6 = " + stack6(intArrayOf(1, 2, 3, 2, 3)).joinToString(" "))
     }
 
     // 탑
@@ -74,6 +77,64 @@ class StackTest {
             }
         }
         result.add(count)
+        return result.toIntArray()
+    }
+
+    // 프린터
+    private fun stack4(priorities: IntArray, location: Int): Int {
+        var result = 0
+        val queue: Queue<Doc> = LinkedList()
+        priorities.forEachIndexed { index, it -> queue.add(Doc(it, index)) }
+        val sortedPriorities = priorities.sortedArrayDescending()
+        var max = sortedPriorities[result]
+        while (queue.isNotEmpty()) {
+            val target = queue.poll()
+            if (target.priority < max) {
+                queue.add(target)
+            } else {
+                if (target.location == location)
+                    return result + 1
+                max = sortedPriorities[++result]
+            }
+        }
+        return result
+    }
+
+    data class Doc(val priority: Int, val location: Int)
+
+    // 쇠막대기
+    private fun stack5(arrangement: String): Int {
+        var partitions = 0
+        val stack: Stack<Int> = Stack()
+        arrangement.replace("()", "0").forEach {
+            when (it) {
+                '(' -> stack.push(0)
+                ')' -> {
+                    stack.pop()
+                    partitions++
+                }
+                '0' -> partitions += stack.size
+            }
+        }
+        return partitions
+    }
+
+    private fun stack6(prices: IntArray): IntArray {
+        val result = ArrayList<Int>()
+        val queue: Queue<Int> = LinkedList<Int>()
+        queue.addAll(prices.toList())
+        var left = prices.size
+        while (queue.isNotEmpty()) {
+            left--
+            val price = queue.poll()
+            val index = queue.indexOfFirst { price > it }
+            if(index < 0) {
+                result.add(left)
+                continue
+            }
+            println("price = $price / stack[$index] = ${queue.elementAt(index)}")
+            result.add(index + 1)
+        }
         return result.toIntArray()
     }
 }
