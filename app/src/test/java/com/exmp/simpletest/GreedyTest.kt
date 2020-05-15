@@ -1,13 +1,17 @@
 package com.exmp.simpletest
 
 import org.junit.Test
+import java.lang.StringBuilder
 import java.util.*
 
 class GreedyTest {
     @Test
     fun greedyMain() {
 //        println("체육복(5, [2, 4], [1, 3, 5]) = ${greedy2(5, intArrayOf(2, 4), intArrayOf(1, 3, 5))}")
-        println("체육복(5, [2, 4], [3]) = ${greedy1(5, intArrayOf(2, 4), intArrayOf(3))}")
+//        println("체육복(5, [2, 4], [3]) = ${greedy1(5, intArrayOf(2, 4), intArrayOf(3))}")
+//        println("큰 수 만들기(1924, 2) = ${greedy2("1924", 2)}")
+//        println("큰 수 만들기(1231234, 3) = ${greedy2("1231234", 3)}")
+        println("큰 수 만들기(4177252841, 4) = ${greedy2("4177252841", 4)}")
     }
 
     // 체육복
@@ -37,5 +41,31 @@ class GreedyTest {
             }
         }
         return attend
+    }
+
+    fun greedy2(number: String, k: Int): String {
+        val array = IntArray(number.length)
+        for(i in number.indices){
+            array[i] = number.substring(i, i+1).toInt()
+        }
+        var complete = 0
+        var start = 0
+        var end = k + 1
+        val result = StringBuilder()
+        while (complete < number.length - k) {
+            var max = -1
+            val prev = start
+            for(index in start until end){
+                val num = array[index]
+                if (num > max) {
+                    max = num
+                    start = index + 1
+                }
+            }
+            end++
+            result.append(max)
+            complete++
+        }
+        return result.toString()
     }
 }
